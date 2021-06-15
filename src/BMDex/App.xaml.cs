@@ -1,4 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using BMDex.Services;
+using BMDex.ViewModels;
+using PokeApiNet;
+using Xamarin.Forms;
 
 namespace BMDex
 {
@@ -9,6 +12,10 @@ namespace BMDex
             InitializeComponent();
 
             MainPage = new NavigationPage(new Views.MainPage());
+            DependencyService.Register<IAbilityService, AbilityService>();
+            DependencyService.Register<IPokemonService, PokemonService>();
+            DependencyService.Register<PokeApiClient>();
+            DependencyService.Register<MainViewModel>();
         }
 
         protected override void OnStart()

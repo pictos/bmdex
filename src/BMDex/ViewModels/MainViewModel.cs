@@ -12,9 +12,9 @@ namespace BMDex.ViewModels
         readonly PokemonService _pokemonService;
         public ObservableRangeCollection<Pokemon> Pokemon { get; set; }
 
-        public MainViewModel()
+        public MainViewModel(PokemonService pokemonService)
         {
-            _pokemonService = new PokemonService();
+            _pokemonService = pokemonService;
             Pokemon = new ObservableRangeCollection<Pokemon>();
         }
 

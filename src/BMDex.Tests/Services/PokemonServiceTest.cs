@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Linq;
 using BMDex.Services;
+using FakeItEasy;
 using FluentAssertions;
+using PokeApiNet;
 using Xunit;
 
 namespace BMDex.Tests.Services
 {
     public class PokemonServiceTest
     {
-        IPokemonService _pokemonService;
-
+        private IPokemonService _pokemonService;
+        private PokeApiClient _pokeApiClientMock;
         public PokemonServiceTest()
         {
-            _pokemonService = new PokemonService();
+            _pokeApiClientMock = A.Fake<PokeApiClient>();
+            _pokemonService = new PokemonService(_pokeApiClientMock);
         }
 
         [Theory]

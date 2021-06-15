@@ -6,6 +6,7 @@ using BMDex.Abstractions;
 using BMDex.Services;
 using BMDex.ViewModels;
 using PokeApiNet;
+using Xamarin.Forms;
 
 namespace BMDex.Views
 {
@@ -14,7 +15,7 @@ namespace BMDex.Views
 
         public MainPage()
         {
-            BindingContext = new MainViewModel();
+            BindingContext = DependencyService.Get<MainViewModel>();
             Content = Build();
         }
 

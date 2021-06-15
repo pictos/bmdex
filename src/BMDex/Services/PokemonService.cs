@@ -14,9 +14,9 @@ namespace BMDex.Services
     {
         readonly PokeApiClient _pokeApiClient;
 
-        public PokemonService()
+        public PokemonService(PokeApiClient pokeApiClient)
         {
-            _pokeApiClient = new PokeApiClient();
+            _pokeApiClient = pokeApiClient;
         }
 
         public async Task<IEnumerable<Pokemon>> GetPokemon(int limit = 20, int offset = 0)

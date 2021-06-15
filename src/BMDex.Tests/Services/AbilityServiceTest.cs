@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoBogus;
 using BMDex.Services;
+using FakeItEasy;
 using FluentAssertions;
+using PokeApiNet;
 using Xunit;
 
 namespace BMDex.Tests.Services
@@ -9,20 +14,32 @@ namespace BMDex.Tests.Services
     public class AbilityServiceTest
     {
         IAbilityService _abilityService;
+        private PokeApiClient _pokeApiClientMock;
 
         public AbilityServiceTest()
         {
-            _abilityService = new AbilityService();
+            _pokeApiClientMock = A.Fake<PokeApiClient>();
+            _abilityService = new AbilityService(_pokeApiClientMock);
         }
 
         [Theory]
         [InlineData(20, 0, 20)]
         [InlineData(100, 300, 27)]
-        [InlineData(100, 400, 0)]
-        [InlineData(100, -10, 0)]
-        [InlineData(-11, -10, 0)]
         public async Task GetAbilities(int limit, int offset, int expected)
         {
+            var namedApiResourceList = new AutoFaker<NamedApiResourceList<Ability>>().Generate();
+            var abilities = new AutoFaker<Ability>().Generate(expected);
+
+            A.CallTo(() => _pokeApiClientMock
+                    .GetNamedResourcePageAsync<Ability>(
+                        A.Dummy<int>(),
+                        A.Dummy<int>(),
+                        A.Dummy<CancellationToken>()))
+                .Returns(namedApiResourceList);
+
+            A.CallTo(() => _pokeApiClientMock.GetResourceAsync(namedApiResourceList.Results))
+                .Returns(abilities);
+
             var result = await _abilityService.GetAbilities(limit, offset);
 
             result.Should().NotBeNull();

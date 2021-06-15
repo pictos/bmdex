@@ -17,9 +17,9 @@ namespace BMDex.Services
     {
         readonly PokeApiClient _pokeApiClient;
 
-        public AbilityService()
+        public AbilityService(PokeApiClient pokeApiClient)
         {
-            _pokeApiClient = new PokeApiClient();
+            _pokeApiClient = pokeApiClient;
         }
 
         public async Task<List<Ability>> GetAbilities(int limit, int offset)
